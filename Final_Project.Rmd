@@ -12,7 +12,8 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Preliminary Data Gathering
 Below, we gather and process our data
 ```{r prelim, echo = TRUE}
-bodyfat.dat = read.table("http://inside.mines.edu/~wnavidi/math424/project/bodyfat.dat", header = TRUE)
+bodyfat.dat = read.table("http://inside.mines.edu/~wnavidi/math424/project/bodyfat.dat", 
+                         header = TRUE)
 bodyfatDF = as.data.frame(bodyfat.dat)
 Bodyfat = bodyfatDF$Bodyfat
 Age = bodyfatDF$Age
@@ -33,26 +34,29 @@ Wrist = bodyfatDF$Wrist
 
 ## Fit the first linear model
 Below we fit a simple linear model
+Figure 1
 ```{r lm_all, echo = TRUE}
-all.lm = lm(Bodyfat ~ Age + Weight + Height + BMI + Neck + Chest + Abdomen + Hip + Thigh + Knee + Ankle + Biceps + Forearm + Wrist)
+all.lm = lm(Bodyfat ~ Age + Weight + Height + BMI + Neck + Chest + Abdomen + Hip + 
+              Thigh + Knee + Ankle + Biceps + Forearm + Wrist)
 all.sum = summary(all.lm)
 all.sum
 ```
 Scater plots for high p-val variables
 ```{r p-testing, echo=TRUE}
-plot(Bodyfat, Weight)
-plot(Bodyfat, Height)
-plot(Bodyfat, BMI)
-plot(Bodyfat, Chest)
-plot(Bodyfat, Hip)
-plot(Bodyfat, Knee)
-plot(Bodyfat, Ankle)
-plot(Bodyfat, Biceps)
+plot(Age, Bodyfat, main = "Bodyfat Vs. Age")
+plot(Height, Bodyfat, main = "Bodyfat Vs. Height")
+plot(BMI, Bodyfat, main = "Bodyfat Vs. BMI")
+plot(Chest, Bodyfat, main = "Bodyfat Vs. Chest")
+plot(Knee, Bodyfat, main = "Bodyfat Vs. Knee")
+plot(Ankle, Bodyfat, main = "Bodyfat Vs. Ankle")
+plot(Biceps, Bodyfat, main = "Bodyfat Vs. Biceps")
 ```
 
 Fit a linear model without height
+Figure 2
 ```{r model_without_height, echo = TRUE}
-new1.lm = lm(Bodyfat ~ Age + Weight + BMI + Neck + Chest + Abdomen + Hip + Thigh + Knee + Ankle + Biceps + Forearm + Wrist)
+new1.lm = lm(Bodyfat ~ Age + Weight + BMI + Neck + Chest + Abdomen + Hip + Thigh
+             + Knee + Ankle + Biceps + Forearm + Wrist)
 new1.sum = summary(new1.lm)
 new1.sum
 ```
@@ -62,8 +66,9 @@ Calculate the $F$-statistic for the reduced model
 anova(new1.lm, all.lm)
 ```
 New model without ankle
-```{r model_without_height, echo = TRUE}
-new2.lm = lm(Bodyfat ~ Age + Weight + BMI + Neck + Chest + Abdomen + Hip + Thigh + Knee + Biceps + Forearm + Wrist)
+```{r model_without_ankle, echo = TRUE}
+new2.lm = lm(Bodyfat ~ Age + Weight + BMI + Neck + Chest + Abdomen + Hip + Thigh
+             + Knee + Biceps + Forearm + Wrist)
 new2.sum = summary(new2.lm)
 new2.sum
 ```
@@ -73,46 +78,51 @@ anova(new2.lm, new1.lm)
 ```
 
 New linear model dropping Chest, Knee, Biceps
-```{r model_without_height, echo = TRUE}
-new3.lm = lm(Bodyfat ~ Age + Weight + BMI + Neck + Abdomen + Hip + Thigh + Forearm + Wrist)
+```{r model_without_Chest_Knee_Biceps, echo = TRUE}
+new3.lm = lm(Bodyfat ~ Age + Weight + BMI + Neck + Abdomen + Hip + Thigh + 
+               Forearm + Wrist)
 new3.sum = summary(new3.lm)
 new3.sum
 ```
 
 Calculate $F$-statistic for dropping Chest, Knee, Biceps
-```{r f_new2, echo=TRUE}
-anova(new3.lm, new2.lm)
+Figure 3
+```{r f_new3, echo=TRUE}
+anova(new3.lm, new1.lm)
 ```
 
 
 ```{r BMI_colinearity, echo = TRUE}
-plot(BMI, Weight)
+plot(BMI, Weight, main = "BMI vs Weight")
 plot(BMI, Height)
 plot(BMI, 1/(Height*Height))
-plot(BMI, (Height*Height))
 ```
 
 New model dropping BMI
-```{r model_without_height, echo = TRUE}
-new4.lm = lm(Bodyfat ~ Age + Weight + Neck + Abdomen + Hip + Thigh + Forearm + Wrist)
+Figure 4
+```{r model_without_BMI, echo = TRUE}
+new4.lm = lm(Bodyfat ~ Age + Weight + Neck + Abdomen + Hip + Thigh + Forearm + 
+               Wrist)
 new4.sum = summary(new4.lm)
 new4.sum
 ```
 
 Calculate $F$-statistic for dropping BMI
-```{r f_new2, echo=TRUE}
+```{r f_new4, echo=TRUE}
 anova(new4.lm, new3.lm)
 ```
 
 Running best subsets on full linear model
+Figure 5
 ```{r best_subsets_full, echo = TRUE}
-bestall = regsubsets(Bodyfat ~ Age + Weight + Height + BMI + Neck + Chest + Abdomen + Hip + Thigh + Knee + Ankle + Biceps + Forearm + Wrist, data = bodyfatDF[,2:15], nbest = 1, nvmax=15)
+library("leaps")
+bestall = regsubsets(Bodyfat ~ Age + Weight + Height + BMI + Neck + Chest + 
+                       Abdomen + Hip + Thigh + Knee + Ankle + Biceps + Forearm + 
+                       Wrist, data = bodyfatDF[,2:15], nbest = 1, nvmax=15)
 bestall.sum = summary(bestall)
 bestall.sum$which
 cbind(bestall.sum$rsq, bestall.sum$adjr2, bestall.sum$cp)
 ```
-
-#UPDATED
 
 
 ```{r best_model, echo=TRUE}
@@ -120,7 +130,7 @@ anova(new4.lm, all.lm)
 ```
 
 Calculating the linear models for all interactions of Body Measurements
-```{r interactions, echo=TURE}
+```{r interactions, echo=TRUE}
 NeckAbdomen = Neck*Abdomen
 NeckHip = Neck*Hip
 NeckThigh = Neck*Thigh
@@ -149,7 +159,14 @@ logThigh = log(Thigh)
 logForearm = log(Forearm)
 logWrist = log(Wrist)
 
-interactions.lm = lm(Bodyfat ~ Age + Weight + Neck + Abdomen + Hip + Thigh + Forearm + Wrist + NeckAbdomen + NeckHip + NeckThigh + NeckForearm + NeckWrist + AbdomenHip + AbdomenThigh + AbdomenForearm + AbdomenWrist + HipThigh + HipForearm + HipWrist + ThighForearm + ThighWrist + ForearmWrist + Neck2 + Abdomen2 + Hip2 + Thigh2 + Forearm2 + Wrist2 + logNeck + logAbdomen + logHip + logThigh + logForearm + logWrist)
+interactions.lm = lm(Bodyfat ~ Age + Weight + Neck + Abdomen + Hip + Thigh + 
+                       Forearm + Wrist + NeckAbdomen + NeckHip + NeckThigh + 
+                       NeckForearm + NeckWrist + AbdomenHip + AbdomenThigh + 
+                       AbdomenForearm + AbdomenWrist + HipThigh + HipForearm + 
+                       HipWrist + ThighForearm + ThighWrist + ForearmWrist + 
+                       Neck2 + Abdomen2 + Hip2 + Thigh2 + Forearm2 + Wrist2 + 
+                       logNeck + logAbdomen + logHip + logThigh + logForearm + 
+                       logWrist)
 
 interactions.sum = summary(interactions.lm)
 interactions.sum
@@ -157,10 +174,23 @@ interactions.sum
 
 Best Subsets on the interactions
 ```{r best_subsets_interactions, echo = TRUE}
-interactDF = as.data.frame(cbind(Age, Weight, Neck, Abdomen, Hip, Thigh, Forearm, Wrist, NeckAbdomen, NeckHip, NeckThigh, NeckForearm, NeckWrist, AbdomenHip, AbdomenThigh, AbdomenForearm, AbdomenWrist, HipThigh, HipForearm, HipWrist, ThighForearm, ThighWrist, ForearmWrist, Neck2, Abdomen2, Hip2, Thigh2, Forearm2, Wrist2, logNeck, logAbdomen, logHip, logThigh, logForearm, logWrist))
+interactDF = as.data.frame(cbind(Age, Weight, Neck, Abdomen, Hip, Thigh, Forearm, 
+                                 Wrist, NeckAbdomen, NeckHip, NeckThigh, NeckForearm, 
+                                 NeckWrist, AbdomenHip, AbdomenThigh, AbdomenForearm, 
+                                 AbdomenWrist, HipThigh, HipForearm, HipWrist, 
+                                 ThighForearm, ThighWrist, ForearmWrist, Neck2, 
+                                 Abdomen2, Hip2, Thigh2, Forearm2, Wrist2, logNeck, 
+                                 logAbdomen, logHip, logThigh, logForearm, logWrist))
 
 
-interactbest = regsubsets(Bodyfat ~ Age + Weight + Neck + Abdomen + Hip + Thigh + Forearm + Wrist + NeckAbdomen + NeckHip + NeckThigh + NeckForearm + NeckWrist + AbdomenHip + AbdomenThigh + AbdomenForearm + AbdomenWrist + HipThigh + HipForearm + HipWrist + ThighForearm + ThighWrist + ForearmWrist + Neck2 + Abdomen2 + Hip2 + Thigh2 + Forearm2 + Wrist2 + logNeck + logAbdomen + logHip + logThigh + logForearm + logWrist, data = interactDF, nbest = 1, nvmax=35)
+interactbest = regsubsets(Bodyfat ~ Age + Weight + Neck + Abdomen + Hip + Thigh + 
+                            Forearm + Wrist + NeckAbdomen + NeckHip + NeckThigh + 
+                            NeckForearm + NeckWrist + AbdomenHip + AbdomenThigh + 
+                            AbdomenForearm + AbdomenWrist + HipThigh + HipForearm + 
+                            HipWrist + ThighForearm + ThighWrist + ForearmWrist + 
+                            Neck2 + Abdomen2 + Hip2 + Thigh2 + Forearm2 + Wrist2 + 
+                            logNeck + logAbdomen + logHip + logThigh + logForearm + 
+                            logWrist, data = interactDF, nbest = 1, nvmax=35)
 interactbest.sum = summary(interactbest)
 interactbest.sum$which
 cbind(bestall.sum$rsq, bestall.sum$adjr2, bestall.sum$cp)
@@ -172,7 +202,9 @@ mincp
 
 Fit linear model for the best subsets
 ```{r best_subsets, echo=TRUE}
-subsets.lm = lm(Bodyfat ~ Age + Weight + Thigh + Neck + Abdomen + Forearm + Wrist + NeckAbdomen + NeckThigh + ForearmWrist + Abdomen2 + Forearm2)
+subsets.lm = lm(Bodyfat ~ Age + Weight + Thigh + Neck + Abdomen + Forearm + 
+                  Wrist + NeckAbdomen + NeckThigh + ForearmWrist + Abdomen2 + 
+                  Forearm2)
 subsets.sum = summary(subsets.lm)
 subsets.sum
 ```
@@ -186,7 +218,8 @@ step(model0, scope = list(lower=model0, upper=model1), direction="both")
 
 We fit the linear model suggested by stepwise regression
 ```{r stepwise, echo=TRUE}
-stepwise.lm = lm(Bodyfat ~ logAbdomen + HipWrist + Neck + ThighForearm + Age + Abdomen + Hip + Wrist + Thigh + Forearm)
+stepwise.lm = lm(Bodyfat ~ logAbdomen + HipWrist + Neck + ThighForearm + 
+                   Age + Abdomen + Hip + Wrist + Thigh + Forearm)
 stepwise.sum = summary(stepwise.lm)
 stepwise.sum
 ```
@@ -200,19 +233,22 @@ stepwise.sum
 
 Test our model with training and testing data
 ```{r train_test, echo=TRUE}
-newDF_x = as.data.frame(cbind(Age, Weight, Neck, Abdomen, Hip, Thigh, Forearm, Wrist))
+newDF_x = as.data.frame(cbind(Age, Weight, Neck, Abdomen, Hip, Thigh, 
+                              Forearm, Wrist))
 train = sample(1:252, 200)
 test = (-train)
-trainX = newDF[train,]
+trainX = newDF_x[train,]
 trainY = Bodyfat[train]
-testX = newDF[test,]
+testX = newDF_x[test,]
 testY = Bodyfat[test]
 
-train.lm = lm(trainY ~ Age + Weight + Neck + Abdomen + Hip + Thigh + Forearm + Wrist, data=trainX)
+train.lm = lm(trainY ~ Age + Weight + Neck + Abdomen + Hip + Thigh + Forearm + 
+                Wrist, data=trainX)
 train.sum = summary(train.lm)
 train.sum
 
-test.lm = lm(testY ~ Age + Weight + Neck + Abdomen + Hip + Thigh + Forearm + Wrist, data=testX)
+test.lm = lm(testY ~ Age + Weight + Neck + Abdomen + Hip + Thigh + Forearm + 
+               Wrist, data=testX)
 test.sum = summary(test.lm)
 test.sum
 ```
