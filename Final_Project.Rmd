@@ -257,3 +257,22 @@ Plotting Residuals for the model
 ```{r residuals, echo=TRUE}
 plot(new4.lm)
 ```
+
+Boxplots for the data to help identify influential points
+```{r boxplots, echo=TRUE, results='show'}
+boxplot(Bodyfat, main="Bodyfat")
+boxplot(Age, main="Age")
+boxplot(Weight, main="Weight")
+boxplot(Height, main="Height")
+boxplot(BMI, main="BMI")
+boxplot(Neck, main="Neck")
+boxplot(Chest, main="Chest")
+boxplot(Abdomen, main="Abdomen")
+boxplot(Hip, main="Hip")
+boxplot(Thigh, main="Thigh")
+boxplot(Knee, main="Knee")
+boxplot(Ankle, main="Ankle")
+boxplot(Biceps, main="Biceps")
+boxplot(Forearm, main="Forearm")
+boxplot(Wrist, main="Wrist")
+```
