@@ -15,22 +15,94 @@ Below, we gather and process our data
 bodyfat.dat = read.table("http://inside.mines.edu/~wnavidi/math424/project/bodyfat.dat", 
                          header = TRUE)
 bodyfatDF = as.data.frame(bodyfat.dat)
+
+min(bodyfatDF$Bodyfat)
+bodyfatDF <- bodyfatDF[-c(which.min(bodyfatDF$Bodyfat)),]
+min(bodyfatDF$Bodyfat)
+max(bodyfatDF$Bodyfat)
+
+min(bodyfatDF$Age)
+max(bodyfatDF$Age)
+
+min(bodyfatDF$Weight)
+max(bodyfatDF$Weight)
+
+min(bodyfatDF$Height)
+bodyfatDF <- bodyfatDF[-c(which.min(bodyfatDF$Height)),]
+min(bodyfatDF$Height)
+max(bodyfatDF$Height)
+
+min(bodyfatDF$BMI)
+max(bodyfatDF$BMI)
+
+min(bodyfatDF$Abdomen)
+max(bodyfatDF$Abdomen)
+
+min(bodyfatDF$Ankle)
+max(bodyfatDF$Ankle)
+
+min(bodyfatDF$Biceps)
+max(bodyfatDF$Biceps)
+
+min(bodyfatDF$Chest)
+max(bodyfatDF$Chest)
+
+min(bodyfatDF$Forearm)
+max(bodyfatDF$Forearm)
+
+min(bodyfatDF$Hip)
+max(bodyfatDF$Hip)
+
+min(bodyfatDF$Knee)
+max(bodyfatDF$Knee)
+
+min(bodyfatDF$Neck)
+max(bodyfatDF$Neck)
+
+min(bodyfatDF$Thigh)
+max(bodyfatDF$Thigh)
+
+min(bodyfatDF$Wrist)
+max(bodyfatDF$Wrist)
+
 Bodyfat = bodyfatDF$Bodyfat
 Age = bodyfatDF$Age
 Weight = bodyfatDF$Weight
 Height = bodyfatDF$Height
 BMI = bodyfatDF$BMI
-Neck = bodyfatDF$Neck
-Chest = bodyfatDF$Chest
 Abdomen = bodyfatDF$Abdomen
-Hip = bodyfatDF$Hip
-Thigh = bodyfatDF$Thigh
-Knee = bodyfatDF$Knee
 Ankle = bodyfatDF$Ankle
 Biceps = bodyfatDF$Biceps
+Chest = bodyfatDF$Chest
 Forearm = bodyfatDF$Forearm
+Hip = bodyfatDF$Hip
+Knee = bodyfatDF$Knee
+Neck = bodyfatDF$Neck
+Thigh = bodyfatDF$Thigh
 Wrist = bodyfatDF$Wrist
 ```
+
+Boxplots for the data to help identify influential points later on
+```{r box, echo = TRUE}
+boxplot(Bodyfat, main="Bodyfat")
+boxplot(Age, main="Age")
+boxplot(Weight, main="Weight")
+boxplot(Height, main="Height")
+boxplot(BMI, main="BMI")
+boxplot(Abdomen, main="Abdomen")
+boxplot(Ankle, main="Ankle")
+boxplot(Biceps, main="Biceps")
+boxplot(Chest, main="Chest")
+boxplot(Forearm, main="Forearm")
+boxplot(Hip, main="Hip")
+boxplot(Knee, main="Knee")
+boxplot(Neck, main="Neck")
+boxplot(Thigh, main="Thigh")
+boxplot(Wrist, main="Wrist")
+```
+
+
+
 
 ## Fit the first linear model
 Below we fit a simple linear model
@@ -256,23 +328,4 @@ test.sum
 Plotting Residuals for the model
 ```{r residuals, echo=TRUE}
 plot(new4.lm)
-```
-
-Boxplots for the data to help identify influential points
-```{r boxplots, echo=TRUE, results='show'}
-boxplot(Bodyfat, main="Bodyfat")
-boxplot(Age, main="Age")
-boxplot(Weight, main="Weight")
-boxplot(Height, main="Height")
-boxplot(BMI, main="BMI")
-boxplot(Neck, main="Neck")
-boxplot(Chest, main="Chest")
-boxplot(Abdomen, main="Abdomen")
-boxplot(Hip, main="Hip")
-boxplot(Thigh, main="Thigh")
-boxplot(Knee, main="Knee")
-boxplot(Ankle, main="Ankle")
-boxplot(Biceps, main="Biceps")
-boxplot(Forearm, main="Forearm")
-boxplot(Wrist, main="Wrist")
 ```
