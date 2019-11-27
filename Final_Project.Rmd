@@ -10,8 +10,8 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## Preliminary Data Gathering
-Below, we gather and process our data
-```{r prelim, echo = TRUE}
+1. Below, we gather and process our data
+```{r prelim, echo = TRUE, results='hide'}
 bodyfat.dat = read.table("http://inside.mines.edu/~wnavidi/math424/project/bodyfat.dat", 
                          header = TRUE)
 bodyfatDF = as.data.frame(bodyfat.dat)
@@ -82,8 +82,8 @@ Thigh = bodyfatDF$Thigh
 Wrist = bodyfatDF$Wrist
 ```
 
-Boxplots for the data to help identify influential points later on
-```{r box, echo = TRUE}
+2. Boxplots for the data to help identify influential points later on
+```{r box, echo = FALSE, result='show'}
 boxplot(Bodyfat, main="Bodyfat")
 boxplot(Age, main="Age")
 boxplot(Weight, main="Weight")
@@ -101,20 +101,19 @@ boxplot(Thigh, main="Thigh")
 boxplot(Wrist, main="Wrist")
 ```
 
-
-
-
-## Fit the first linear model
-Below we fit a simple linear model
+3. Below we fit a simple linear model
 Figure 1
-```{r lm_all, echo = TRUE}
+```{r lm_all, echo = TRUE, results = 'show'}
 all.lm = lm(Bodyfat ~ Age + Weight + Height + BMI + Neck + Chest + Abdomen + Hip + 
               Thigh + Knee + Ankle + Biceps + Forearm + Wrist)
 all.sum = summary(all.lm)
 all.sum
 ```
+\centering Figure 1
+
+
 Scater plots for high p-val variables
-```{r p-testing, echo=TRUE}
+```{r p-testing, echo=FALSE, results='show'}
 plot(Age, Bodyfat, main = "Bodyfat Vs. Age")
 plot(Height, Bodyfat, main = "Bodyfat Vs. Height")
 plot(BMI, Bodyfat, main = "Bodyfat Vs. BMI")
@@ -126,31 +125,23 @@ plot(Biceps, Bodyfat, main = "Bodyfat Vs. Biceps")
 
 Fit a linear model without height
 Figure 2
-```{r model_without_height, echo = TRUE}
+```{r model_without_height, echo = TRUE, results='show'}
 new1.lm = lm(Bodyfat ~ Age + Weight + BMI + Neck + Chest + Abdomen + Hip + Thigh
              + Knee + Ankle + Biceps + Forearm + Wrist)
 new1.sum = summary(new1.lm)
 new1.sum
 ```
 
-Calculate the $F$-statistic for the reduced model
-```{r f_new1, echo=TRUE}
-anova(new1.lm, all.lm)
-```
 New model without ankle
-```{r model_without_ankle, echo = TRUE}
+```{r model_without_ankle, echo = TRUE, results='show'}
 new2.lm = lm(Bodyfat ~ Age + Weight + BMI + Neck + Chest + Abdomen + Hip + Thigh
              + Knee + Biceps + Forearm + Wrist)
 new2.sum = summary(new2.lm)
 new2.sum
 ```
-Calculate $F$-statistic for removing ankle
-```{r f_new2, echo=TRUE}
-anova(new2.lm, new1.lm)
-```
 
 New linear model dropping Chest, Knee, Biceps
-```{r model_without_Chest_Knee_Biceps, echo = TRUE}
+```{r model_without_Chest_Knee_Biceps, echo = TRUE, results='show'}
 new3.lm = lm(Bodyfat ~ Age + Weight + BMI + Neck + Abdomen + Hip + Thigh + 
                Forearm + Wrist)
 new3.sum = summary(new3.lm)
@@ -159,12 +150,12 @@ new3.sum
 
 Calculate $F$-statistic for dropping Chest, Knee, Biceps
 Figure 3
-```{r f_new3, echo=TRUE}
+```{r f_new3, echo=TRUE, results='show'}
 anova(new3.lm, new1.lm)
 ```
 
 
-```{r BMI_colinearity, echo = TRUE}
+```{r BMI_colinearity, echo = FALSE, results='show'}
 plot(BMI, Weight, main = "BMI vs Weight")
 plot(BMI, Height)
 plot(BMI, 1/(Height*Height))
