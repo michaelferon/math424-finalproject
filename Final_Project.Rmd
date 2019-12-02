@@ -320,3 +320,9 @@ Plotting Residuals for the model
 ```{r residuals, echo=TRUE}
 plot(new4.lm)
 ```
+
+Removing the high leverage points from the model and refitting the model
+```{r lev, echo=TRUE, results='show'}
+# new data model includes age, weight, neck, abdomen, hip, thigh, forearm, wrist
+# bodyfatDF <- bodyfatDF[-c(which.min(bodyfatDF$Bodyfat)),]
+```
