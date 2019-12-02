@@ -298,7 +298,7 @@ Test our model with training and testing data
 ```{r train_test, echo=TRUE}
 newDF_x = as.data.frame(cbind(Age, Weight, Neck, Abdomen, Hip, Thigh, 
                               Forearm, Wrist))
-train = sample(1:252, 200)
+train = sample(1:250, 200)
 test = (-train)
 trainX = newDF_x[train,]
 trainY = Bodyfat[train]
@@ -323,6 +323,37 @@ plot(new4.lm)
 
 Removing the high leverage points from the model and refitting the model
 ```{r lev, echo=TRUE, results='show'}
-# new data model includes age, weight, neck, abdomen, hip, thigh, forearm, wrist
-# bodyfatDF <- bodyfatDF[-c(which.min(bodyfatDF$Bodyfat)),]
+# new data model includes age, weight, neck, abdomen, hip, thigh, forearm, wrist without the two high leverage points
+bodyfatDF_no_lev <- bodyfatDF[-c(39, 174),]
+Bodyfat_no_lev = bodyfatDF_no_lev$Bodyfat
+Age_no_lev = bodyfatDF_no_lev$Age
+Weight_no_lev = bodyfatDF_no_lev$Weight
+Neck_no_lev = bodyfatDF_no_lev$Neck
+Abdomen_no_lev = bodyfatDF_no_lev$Abdomen
+Hip_no_lev = bodyfatDF_no_lev$Hip
+Thigh_no_lev = bodyfatDF_no_lev$Thigh
+Forearm_no_lev = bodyfatDF_no_lev$Forearm
+Wrist_no_lev = bodyfatDF_no_lev$Wrist
+
+newDF_x_no_lev = as.data.frame(cbind(Age_no_lev, Weight_no_lev, Neck_no_lev, Abdomen_no_lev, Hip_no_lev, Thigh_no_lev, 
+                              Forearm_no_lev, Wrist_no_lev))
+train_no_lev = sample(1:248, 200)
+test_no_lev = (-train_no_lev)
+trainX_no_lev = newDF_x_no_lev[train_no_lev,]
+trainY_no_lev = Bodyfat_no_lev[train_no_lev]
+testX_no_lev = newDF_x_no_lev[test_no_lev,]
+testY_no_lev = Bodyfat_no_lev[test_no_lev]
+
+train.lm_no_lev = lm(trainY_no_lev ~ Age_no_lev + Weight_no_lev + Neck_no_lev + Abdomen_no_lev + Hip_no_lev + Thigh_no_lev + Forearm_no_lev + 
+                Wrist_no_lev, data=trainX_no_lev)
+train.sum_no_lev = summary(train.lm_no_lev)
+train.sum_no_lev
+
+test.lm_no_lev = lm(testY_no_lev ~ Age_no_lev + Weight_no_lev + Neck_no_lev + Abdomen_no_lev + Hip_no_lev + Thigh_no_lev + Forearm_no_lev + 
+                Wrist_no_lev, data=testX_no_lev)
+test.sum_no_lev = summary(test.lm_no_lev)
+test.sum_no_lev
 ```
+
+
+
