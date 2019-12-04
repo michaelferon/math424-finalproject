@@ -150,9 +150,9 @@ anova(new2.lm, new1.lm)
 ## 8.
 Investigating the colinearity of BMI
 ```{r BMI_colinearity, echo = FALSE, fig.align = "center", fig.height=4}
-plot(BMI, Weight, main = "BMI vs Weight")
-plot(BMI, Height, main = "BMI vs Height")
-plot(BMI, 1/(Height*Height), main="BMI vs. 1/Height^2")
+plot(BMI, Weight, main = "Weight vs BMI")
+plot(BMI, Height, main = "Height vs BMI")
+plot(BMI, 1/(Height*Height), main="1/Height^2 vs BMI")
 ```
 
 ## 9.
