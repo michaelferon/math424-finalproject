@@ -1,5 +1,5 @@
 ---
-title: "Final Project"
+title: "Appendix"
 author: "Harrison Magee, Michael Feron, Blake Waechter"
 date: "November 13, 2019"
 output: pdf_document
@@ -284,7 +284,7 @@ stepwise.sum
 
 ## 17.
 Compare the linear models
-```{r compare, echo = FALSE, results='show'}
+```{r compare, echo = TRUE, results='show'}
 new3.sum
 subsets.sum
 stepwise.sum
