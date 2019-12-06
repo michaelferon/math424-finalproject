@@ -1,7 +1,7 @@
 ---
 title: "Appendix"
 author: "Harrison Magee, Michael Feron, Blake Waechter"
-date: "November 13, 2019"
+date: "December 9, 2019"
 output: pdf_document
 ---
 
@@ -114,7 +114,6 @@ all.sum
 ## 4.
 Scater plots for high p-val variables
 ```{r p-testing, echo=FALSE, out.width='\\textwidth', fig.height = 4}
-plot(Age, Bodyfat, main = "Bodyfat Vs. Age")
 plot(Height, Bodyfat, main = "Bodyfat Vs. Height")
 plot(BMI, Bodyfat, main = "Bodyfat Vs. BMI")
 plot(Chest, Bodyfat, main = "Bodyfat Vs. Chest")
