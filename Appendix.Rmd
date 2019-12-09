@@ -182,6 +182,19 @@ anova(new3.lm, all.lm)
 ```
 
 ## 12.
+Plotting the variables against Bodyfat to help identify tranformations to use
+```{r transform_plots, echo=TRUE, out.width='\\textwidth', fig.height = 4}
+plot(Age, Bodyfat, main='Bodyfat vs. Age')
+plot(Weight, Bodyfat, main='Bodyfat vs. Weight')
+plot(Neck, Bodyfat, main='Bodyfat vs. Neck')
+plot(Abdomen, Bodyfat, main='Bodyfat vs. Abdomen')
+plot(Hip, Bodyfat, main='Bodyfat vs. Hip')
+plot(Thigh, Bodyfat, main='Bodyfat vs. Thigh')
+plot(Forearm, Bodyfat, main='Bodyfat vs. Forearm')
+plot(Wrist, Bodyfat, main='Bodyfat vs. Wrist')
+```
+
+## 13.
 Calculating the linear models for all interactions of Body Measurements
 ```{r interactions, echo=TRUE}
 NeckAbdomen = Neck*Abdomen
@@ -225,7 +238,7 @@ interactions.sum = summary(interactions.lm)
 interactions.sum
 ```
 
-## 13.
+## 14.
 Best Subsets on the interactions
 ```{r best_subsets_interactions, echo = TRUE}
 interactDF = as.data.frame(cbind(Age, Weight, Neck, Abdomen, Hip, Thigh, Forearm, 
@@ -254,7 +267,7 @@ maxradj
 mincp
 ```
 
-## 14.
+## 15.
 Fit linear model for the best subsets
 ```{r best_subsets, echo=TRUE}
 subsets.lm = lm(Bodyfat ~ Age + Weight + Thigh + Neck + Abdomen + Forearm + 
@@ -264,7 +277,7 @@ subsets.sum = summary(subsets.lm)
 subsets.sum
 ```
 
-## 15.
+## 16.
 Stepwise Regression on all interactions
 ```{r stepwise_interactions, echo=TRUE}
 model0 = lm(Bodyfat ~ 1, data = interactDF)
@@ -272,7 +285,7 @@ model1 = lm(Bodyfat ~ ., data = interactDF)
 step(model0, scope = list(lower=model0, upper=model1), direction="both")
 ```
 
-## 16.
+## 17.
 We fit the linear model suggested by stepwise regression
 ```{r stepwise, echo=TRUE}
 stepwise.lm = lm(Bodyfat ~ logAbdomen + HipWrist + Neck + ThighForearm + 
@@ -281,7 +294,7 @@ stepwise.sum = summary(stepwise.lm)
 stepwise.sum
 ```
 
-## 17.
+## 18.
 Compare the linear models
 ```{r compare, echo = TRUE, results='show'}
 new3.sum
@@ -289,7 +302,7 @@ subsets.sum
 stepwise.sum
 ```
 
-## 18.
+## 19.
 Test our model with training and testing data
 ```{r train_test, echo=TRUE}
 newDF_x = as.data.frame(cbind(Age, Weight, Neck, Abdomen, Hip, Thigh, 
@@ -312,7 +325,7 @@ test.sum = summary(test.lm)
 test.sum
 ```
 
-## 19.
+## 20.
 Plotting residuals for the model and residuals for the single variables
 ```{r residuals, echo=TRUE, fig.height=4}
 plot(new3.lm)
@@ -327,7 +340,7 @@ plot(Forearm, Residuals, main="Residuals vs. Forearm")
 plot(Wrist, Residuals, main="Residuals vs. Wrist")
 ```
 
-## 20.
+## 21.
 Removing the high leverage points from the model and refitting the model
 ```{r lev, echo=TRUE, results='show'}
 # new data model includes age, weight, neck, abdomen, hip, thigh, forearm, wrist
